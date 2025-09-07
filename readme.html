@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical Computing - Fall 2025</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Print styling for page breaks and fidelity */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Override all dark backgrounds and light text for printing */
+            .ascii-title {
+                background: #ffffff !important;
+                color: #000000 !important;
+                border: 2px solid #000000 !important;
+            }
+
+            .info-card {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .description {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .outcomes-list {
+                background: #ffffff !important;
+                border-left: 4px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .instructor-info {
+                background: #ffffff !important;
+                border-left: 3px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .assessment-table {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .assessment-table th {
+                background: #000000 !important;
+                color: #ffffff !important;
+            }
+
+            .assessment-table td {
+                border-bottom: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .criteria-item {
+                background: #ffffff !important;
+                border-left: 3px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .criteria-weight {
+                background: #000000 !important;
+                color: #ffffff !important;
+            }
+
+            .date-item {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .date {
+                color: #000000 !important;
+            }
+
+            .policy-section {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .resource-link {
+                background: #ffffff !important;
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            h2, h3 {
+                background: #000000 !important;
+                color: #ffffff !important;
+            }
+
+            code {
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .highlight {
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            section, h2 {
+                page-break-before: always;
+                break-inside: avoid;
+            }
+
+            .info-card,
+            .description,
+            .outcomes-list,
+            .assessment-table,
+            .criteria-item,
+            .date-item,
+            .policy-section,
+            .resource-link,
+            .ascii-title,
+            .instructor-info {
+                break-inside: avoid;
+            }
+        }
+
+        .ascii-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.6rem, 2.5vw, 1rem);
+            color: #dc143c;
+            text-align: center;
+            margin: 2rem 0 3rem 0;
+            line-height: 1.1;
+            white-space: pre;
+            overflow-x: auto;
+            background: linear-gradient(45deg, #220011, #110000);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #dc143c20;
+        }
+               
+        .header-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #1a1a1a, #111111);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: #dc143c;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.1);
+        }
+        
+        h1, h2, h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            background: #dc143c;
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            border: none;
+        }
+        
+        h3 {
+            background: #dc143c;
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .meta-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .instructor-info {
+            background: #111;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #dc143c;
+            margin: 1rem 0;
+        }
+        
+        .description {
+            background: linear-gradient(135deg, #0a1a1a, #0a0a1a);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        
+        .outcomes-list {
+            background: #111;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #dc143c;
+            margin: 1rem 0;
+        }
+        
+        .outcomes-list ol {
+            margin-left: 1.5rem;
+        }
+        
+        .outcomes-list li {
+            margin: 0.5rem 0;
+        }
+        
+        .assessment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .assessment-table th {
+            background: #dc143c;
+            color: #ffffff;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+        }
+        
+        .assessment-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .assessment-table tr:hover {
+            background: #1a1a1a;
+        }
+        
+        .submission-criteria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .criteria-item {
+            background: #111;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #dc143c;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .criteria-weight {
+            background: #dc143c;
+            color: #ffffff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 50%;
+            font-weight: 700;
+            min-width: 2.5rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .dates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .date-item {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .date-item:hover {
+            border-color: #dc143c;
+        }
+        
+        .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #dc143c;
+            font-weight: 700;
+        }
+        
+        .policy-section {
+            background: linear-gradient(135deg, #1a0a0a, #0a0a1a);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin: 2rem 0;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .resource-link {
+            background: #111;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #333;
+            text-decoration: none;
+            color: #66ccff;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .resource-link:hover {
+            border-color: #66ccff;
+            background: #1a1a1a;
+            box-shadow: 0 0 15px rgba(102, 204, 255, 0.1);
+        }
+        
+        ul {
+            margin-left: 2rem;
+            margin-top: 1rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        code {
+            background: #222;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #dc143c;
+        }
+        
+        .highlight {
+            background: linear-gradient(45deg, #dc143c20, transparent);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+        }
+        
+        /* Accessibility improvements for Canadian standards (AODA/WCAG 2.1 AA) */
+        
+        /* Focus indicators for keyboard navigation */
+        a:focus, button:focus, .info-card:focus-within, .date-item:focus-within {
+            outline: 3px solid #dc143c;
+            outline-offset: 2px;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            body {
+                background: #000;
+                color: #fff;
+            }
+            
+            .info-card, .assessment-table, .criteria-item {
+                border-color: #fff;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Screen reader improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #dc143c;
+            color: #000;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 3px;
+            z-index: 1000;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ascii-title {
+                font-size: 0.3rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <header>
+        <div class="ascii-title" role="banner" aria-label="Physical Computing Course Title">
+█████╗ ██╗  ██╗██╗   ██╗███████╗██╗ ██████╗ █████╗ ██╗         
+██╔══██╗██║  ██║╚██╗ ██╔╝██╔════╝██║██╔════╝██╔══██╗██║         
+███████╔╝███████║ ╚████╔╝ ███████╗██║██║     ███████║██║         
+██╔═══╝ ██╔═══██║  ╚██╔╝  ╚══════██║██║     ██╔═══██║██║         
+██║     ██║  ██║   ██║   ███████╝██║╚██████╗██║  ██║███████╗    
+╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝    
+                                                                  
+ ██████╗ ██████╗ ███╗   ███╗██████╗ ██╗   ██╗████████╗██╗███╗   ██╗ ██████╗ 
+██╔════╝██╔═══██╗████╗ ████║██╔══██╗██║   ██║╚══██╔══╝██║████╗  ██║██╔════╝ 
+██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║   ██║   ██║██╔██╗ ██║██║  ███╗
+██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║   ██║   ██║   ██║██║╚██╗██║██║   ██║
+╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ╚██████╔╝   ██║   ██║██║ ╚████║╚██████╔╝
+ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═════╝    ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+        </div>
+    </header>
+
+    <main id="main-content">
+
+    <section class="header-grid" aria-label="Course Information">
+        <div class="info-card" tabindex="0">
+            <h3># Course Details</h3>
+            <div class="meta-info">
+                <p><strong>Code:</strong> MDIA-2551</p>
+                <p><strong>Term:</strong> Fall 2024</p>
+                <p><strong>Credits:</strong> 3</p>
+                <p><strong>Schedule:</strong> Monday 13:00-17:00</p>
+                <p><strong>Location:</strong> A201, A207, A001</p>
+            </div>
+        </div>
+        
+        <div class="info-card" tabindex="0">
+            <div class="instructor-info">
+                <h3># Instructor</h3>
+                <p><strong>Nathan Ryan</strong></p>
+                <p>📧 nryan@nscad.ca</p>
+                <p>🕐 Office hours by appointment</p>
+            </div>
+        </div>
+    </section>
+
+    <h2># Course Overview</h2>
+    <div class="description">
+        This course is an introduction to the fundamentals of electricity and electronics as they pertain to art. Students will learn how to design and build electronic circuits for various applications, including sensing motion, touch, sound, and other environmental conditions, as well as controlling lights, motors, and other actuators. 
+        
+        <br><br>Emphasis will be placed on creating emergent and interactive sculptural, installation, performance, video, and audio works for creative, critical, and social purposes.
+        
+        <br><br>Practical workshops will revolve predominantly around accessible <code>Arduino AVRs</code> and inexpensive sensors, motors, lights, speakers, and other I/O components.
+    </div>
+
+    <h2># Learning Outcomes</h2>
+    <div class="outcomes-list">
+        <p>Upon successful completion of this course the student will demonstrate the ability to:</p>
+        <ol>
+            <li><strong>Basic Electronics Literacy:</strong>
+                <ul>
+                    <li>Understand terminology and usage of basic components</li>
+                    <li>Understand constraints when building circuits</li>
+                </ul>
+            </li>
+            <li><strong>Documentation Skills:</strong> Document work using concise descriptions, code snippets and standardized circuit diagrams</li>
+            <li><strong>Artistic Expression:</strong> Create artistic expression with electronics as a fundamental element</li>
+        </ol>
+    </div>
+
+    <h2># Course Structure</h2>
+    <div class="info-card">
+        <p><strong>Format:</strong> In-person studio with practical, hands-on, experiential learning</p>
+        <p><strong>Workload:</strong> 12 hours/week total commitment</p>
+        
+        <h3># Class Format</h3>
+        <ul>
+            <li><span class="highlight">Student Sharing</span> - Show and tell of work from previous week</li>
+            <li><span class="highlight">Instructional Component</span> - New concepts, skills, and materials</li>
+            <li><span class="highlight">Hands-on Practice</span> - Apply new knowledge in class setting</li>
+        </ul>
+    </div>
+
+    <h2># Assessment Schedule</h2>
+    <table class="assessment-table" role="table" aria-label="Assessment Schedule and Weights">
+        <thead>
+            <tr>
+                <th scope="col">Assessment</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Weight %</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Hand Made Circuits</td>
+                <td>September 23</td>
+                <td>10%</td>
+            </tr>
+            <tr>
+                <td>Reverse Engineering</td>
+                <td>October 27</td>
+                <td>10%</td>
+            </tr>
+            <tr>
+                <td>Input Device</td>
+                <td>December 1</td>
+                <td>10%</td>
+            </tr>
+            <tr>
+                <td><strong>Final Project</strong></td>
+                <td>December 15</td>
+                <td>25%</td>
+            </tr>
+            <tr>
+                <td>Weekly Assessments (×10)</td>
+                <td>Weekly</td>
+                <td>45%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2># Submission Requirements</h2>
+    <p>Each project must include supporting documentation:</p>
+    
+    <div class="submission-criteria">
+        <div class="criteria-item">
+            <div class="criteria-weight">40</div>
+            <div>
+                <strong>Artist Statement</strong><br>
+                Description of intent and supporting material
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-weight">10</div>
+            <div>
+                <strong>Components</strong><br>
+                Description of components employed
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-weight">10</div>
+            <div>
+                <strong>Schematic</strong><br>
+                Electronics schematic diagram
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-weight">10</div>
+            <div>
+                <strong>Wiring</strong><br>
+                Fritzing, manual drawing, or clear photograph
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-weight">10</div>
+            <div>
+                <strong>Code/Function</strong><br>
+                Supporting code and/or description of functioning
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-weight">20</div>
+            <div>
+                <strong>Reflection</strong><br>
+                Success/failure analysis and discoveries
+            </div>
+        </div>
+    </div>
+
+    <h2># Important Dates</h2>
+    <div class="dates-grid">
+        <div class="date-item">
+            <span>Classes Begin</span>
+            <span class="date">Sept 5</span>
+        </div>
+        <div class="date-item">
+            <span>Last Day to Add/Drop</span>
+            <span class="date">Sept 19</span>
+        </div>
+        <div class="date-item">
+            <span>Courses Dropped as 'W'</span>
+            <span class="date">Sept 20</span>
+        </div>
+        <div class="date-item">
+            <span>Truth & Reconciliation Day</span>
+            <span class="date">Sept 30</span>
+        </div>
+        <div class="date-item">
+            <span>Thanksgiving</span>
+            <span class="date">Oct 13</span>
+        </div>
+        <div class="date-item">
+            <span>Mid-Semester Warning</span>
+            <span class="date">Oct 17</span>
+        </div>
+        <div class="date-item">
+            <span>Last Day to Drop with 'W'</span>
+            <span class="date">Oct 31</span>
+        </div>
+        <div class="date-item">
+            <span>Study Break</span>
+            <span class="date">Nov 10-14</span>
+        </div>
+        <div class="date-item">
+            <span>Remembrance Day</span>
+            <span class="date">Nov 11</span>
+        </div>
+        <div class="date-item">
+            <span>Last Day of Classes</span>
+            <span class="date">Dec 5</span>
+        </div>
+        <div class="date-item">
+            <span>Assessment Period</span>
+            <span class="date">Dec 8-17</span>
+        </div>
+        <div class="date-item">
+            <span>Final Grades Due</span>
+            <span class="date">Dec 19</span>
+        </div>
+    </div>
+
+    <h2># Safety & Policies</h2>
+    <div class="policy-section">
+        <h3># Health & Safety</h3>
+        <p>⚠️ <strong>WHMIS certification required</strong> - Up-to-date safety certification is mandatory for studio access. Complete online through Brightspace.</p>
+        
+        <h3># Attendance Policy</h3>
+        <p>Attendance is essential for hands-on learning. <span class="highlight">Do not attend if experiencing COVID symptoms or feeling unwell.</span> Contact instructor immediately for alternative arrangements.</p>
+        
+        <h3># Academic Integrity</h3>
+        <p>All work must comply with standard academic practices in acknowledging sources. Review NSCAD's Academic Integrity Policy.</p>
+    </div>
+
+    <h2># Resources & Support</h2>
+    <div class="resources-grid">
+        <a href="https://miro.com/app/board/uXjVJS70eg0=/?share_link_id=285726320294" class="resource-link">
+            <strong>💻 Miro Boards</strong><br>
+            Weekly learning resources and documentation tools
+        </a>
+        <a href="https://nscad.ca/student-experience/academic-resources/writing-centre/" class="resource-link">
+            <strong>✏️ Writing Centre</strong><br>
+            Professional tutoring for assignments (S403)
+        </a>
+        <a href="https://nscad.ca/student-experience/academic-resources/accessibility/" class="resource-link">
+            <strong>♿ Accessibility Services</strong><br>
+            Contact: accessibility@nscad.ca
+        </a>
+        <a href="https://nscad.ca/student-experience/academic-resources/mental-health-and-wellness/" class="resource-link">
+            <strong>🧠 Mental Health Support</strong><br>
+            Wellness resources and counseling
+        </a>
+        <a href="https://sunscad.org/food-bank/" class="resource-link">
+            <strong>🎒 SUNSCAD Food Bank</strong><br>
+            Student support services
+        </a>
+        <a href="https://nscad.ca/student-experience/academic-resources/scholarships-and-bursaries/" class="resource-link">
+            <strong>💰 Financial Aid</strong><br>
+            Scholarships and bursaries
+        </a>
+    </div>
+
+    </main>
+
+    <footer style="text-align: center; margin-top: 3rem; padding: 2rem; border-top: 1px solid #333; color: #666;" role="contentinfo">
+        <p>NSCAD University • Physical Computing • Fall 2024</p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;">// Building the future through creative technology</p>
+    </footer>
+</body>
+</html>
